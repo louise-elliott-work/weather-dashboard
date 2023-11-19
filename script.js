@@ -19,5 +19,21 @@ fetch (queryURL)
         return response.json();
     // Open the boxed response to get the data.
     }).then (function (data) {
+        console.log(data);
     });
 
+// * Code for main search button - searching for a city when a user enters the city name in the search box.
+// HTML element: <button type="submit" class="btn search-button" id="search-button">
+
+// The user can already enter the name of a city in the search box.
+// When the user clicks on the search button
+var searchButton = document.getElementById("search-button");
+searchButton.addEventListener("click", handleSearch);
+function handleSearch() {
+    console.log("Search button clicked");
+}
+// Then the latitude and longitude of the city are found
+
+// And assigned to the variables lat and lon
+
+// To give the JSON output for that city's weather forecast.
