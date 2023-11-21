@@ -19,14 +19,12 @@ console.log("Test query using cityName of 'Bath' = " + queryURLcity);
 // The user can enter the name of a city in the search box.
 // When the user clicks on the search button
 var searchButton = document.getElementById("search-button");
-searchButton.addEventListener("click", handleSearch());
-// then the handleSearch function is run
-function handleSearch() {
-    // ! When the user enters a city name into the search box and clicks search, I want to capture that value and store is in the variable searchInput.
+searchButton.addEventListener("click", function(event) {
+    event.preventDefault();
     var searchInput = document.getElementById("search-input").value;
     console.log("Search button clicked");
     console.log(searchInput);
-};
+});
 
 // and then the latitude and longitude for the city are found and assigned to the variables lat and lon to give the JSON output for that city's weather forecast.
     // * Fetch code:
