@@ -58,96 +58,74 @@ searchButton.addEventListener("click", function(event) {
                     // Open the boxed response to get the data.
                     }).then (function (data) {
 
-        // Variables to use across multiple cards:
-        var heading;
-        var date;
-        var listItem;
-        var iconCode;
-        var iconURL;
-        var icon;
-        var tempK;
-        var tempC;
-        var tempText;
-        var wind;
-        var windText;
-        var humidity;
-        var humidityText;
+                        // Variables to use across multiple cards:
+                        var heading;
+                        var date;
+                        var listItem;
+                        var iconCode;
+                        var iconURL;
+                        var icon;
+                        var tempK;
+                        var tempC;
+                        var tempText;
+                        var wind;
+                        var windText;
+                        var humidity;
+                        var humidityText;
         
-        // Array of weather data for forecast days:
-        var forecastArray = [];
-        forecastArray.push(data.list[7], data.list[15], data.list[23], data.list[31], data.list[39]);
+
 
         // For current day card, reference and assign the key information
-            // ! refactor this code below to reduce number of lines
 
-            var day0 = data.list[0];
             var cityName = data.city.name;
+            console.log(data.city.name);
+            cityNameHeading = document.getElementById("city-name");
+            cityNameHeading.textContent = cityName
+            
+            var currentDate = dayjs().format("DD/MM/YYYY");
+            currentDateHeading = document.getElementById("current-date");
+            currentDateHeading.textContent = currentDate
 
-            heading = document.getElementById("card-day0-heading");
-            heading.textContent = cityName + " (" + dayjs().format("DD/MM/YYYY") + ") ";
+                        // Array of weather data for forecast days:
+                        var forecastArray = [];
+                        forecastArray.push(data.list[0], data.list[7], data.list[15], data.list[23], data.list[31], data.list[39]);
+            
+                        // For each item in the forecastArray, reference and assign the key information
+                        for (var i = 0; i < forecastArray.length; i++) {
+                            date = forecastArray[i].dt_txt;
+                            iconCode = forecastArray[i].weather[0].icon;
+                            iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                            tempK = forecastArray[i].main.temp;
+                            tempC = Math.round(tempK-273.15);
+                            wind = Math.round(forecastArray[i].wind.speed);
+                            humidity = forecastArray[i].main.humidity;
+                            console.log(date, iconCode, tempC, wind, humidity);
 
-            icon = document.getElementById("card-day0-icon");
-            iconCode = day0.weather[0].icon;
-            iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
-            icon.setAttribute("src", iconURL);
+                            // For each forecast card, assign the corresponding key information
 
-            tempK = day0.main.temp;
-            tempC = Math.round(tempK-273.15);
-            listItem = document.createElement("li");
-            tempText = document.createTextNode("Temp: " + tempC + "ºc");
-            listItem.append(tempText);
-            document.getElementById("card-day0-list").appendChild(listItem);
+                            heading = document.querySelectorAll("#card-heading");
+                            heading[i].textContent = date;
 
-            wind = Math.round(day0.wind.speed);
-            listItem = document.createElement("li");
-            windText = document.createTextNode("Wind: " + wind + "kph");
-            listItem.append(windText);
-            document.getElementById("card-day0-list").appendChild(listItem);
+                            icon = document.querySelectorAll("#card-icon");
+                            icon[i].setAttribute("src", iconURL);
+                            
+                            listItem = document.createElement("li");
+                            tempText = document.createTextNode("Temp: " + tempC + " ºc");
+                            listItem.append(tempText);
+                            document.querySelectorAll("#card-list")[i].appendChild(listItem);
 
-            humidity = day0.main.humidity;
-            listItem = document.createElement("li");
-            humidityText = document.createTextNode("Humidity: " + humidity + "%");
-            listItem.append(humidityText);
-            document.getElementById("card-day0-list").appendChild(listItem);
+                            listItem = document.createElement("li");
+                            windText = document.createTextNode("Wind: " + wind + " kph");
+                            listItem.append(windText);
+                            document.querySelectorAll("#card-list")[i].appendChild(listItem);
+                            
+                            listItem = document.createElement("li");
+                            humidityText = document.createTextNode("Humidity: " + humidity + " %");
+                            listItem.append(humidityText);
+                            document.querySelectorAll("#card-list") [i].appendChild(listItem);
 
+                        }
 
-
-            // For each item in the forecastArray, reference and assign the key information
-            for (var i = 0; i < forecastArray.length; i++) {
-                date = forecastArray[i].dt_txt;
-                iconCode = forecastArray[i].weather[0].icon;
-                iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
-                tempK = forecastArray[i].main.temp;
-                tempC = Math.round(tempK-273.15);
-                wind = Math.round(forecastArray[i].wind.speed);
-                humidity = forecastArray[i].main.humidity;
-                console.log(date, iconCode, tempC, wind, humidity);
-
-                // For each forecast card, assign the corresponding key information
-
-                heading = document.querySelectorAll("#card-heading");
-                heading[i].textContent = date;
-
-                icon = document.querySelectorAll("#card-icon");
-                icon[i].setAttribute("src", iconURL);
-                
-                listItem = document.createElement("li");
-                tempText = document.createTextNode("Temp: " + tempC + " ºc");
-                listItem.append(tempText);
-                document.querySelectorAll("#card-list")[i].appendChild(listItem);
-
-                listItem = document.createElement("li");
-                windText = document.createTextNode("Wind: " + wind + " kph");
-                listItem.append(windText);
-                document.querySelectorAll("#card-list")[i].appendChild(listItem);
-                
-                listItem = document.createElement("li");
-                humidityText = document.createTextNode("Humidity: " + humidity + " %");
-                listItem.append(humidityText);
-                document.querySelectorAll("#card-list") [i].appendChild(listItem);
-
-            }
-
-        });
-    });
+                    });
+                });
 });
