@@ -1,7 +1,39 @@
+#header {
+    background-color: cornflowerblue;
+    color: whitesmoke;
+}
+
+
+
 ol {
+    padding-left: none !important;
     list-style-type: none;
+
 }
 
 li {
-    padding: 10px;
+    padding-left: none !important;
+    padding: 5px;
 }
+
+#form-heading {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#search-button {
+    background-color: azure;
+}
+
+#current-day-card {
+    background-color: rgba(137, 43, 226, 0.237);
+    border-radius: 10px;
+    color: whitesmoke;
+}
+
+#forecast-card {
+    background-color: aliceblue;
+    border-color: navy;
+    margin: 3px;
+}
+
