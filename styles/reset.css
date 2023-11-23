@@ -1,9 +1,17 @@
-#header {
-    background-color: cornflowerblue;
-    color: whitesmoke;
+
+:root {
+    --dark1: #96b1c1;
+    --dark2: #466390;
+    --light1: #fefdb0;
+    --light2: #fff49f;
+    --light3: #efe092;
+    --white: whitesmoke;
 }
 
-
+#header {
+    background-color: var(--dark2);
+    color: var(--white);
+}
 
 ol {
     padding-left: none !important;
@@ -22,18 +30,19 @@ li {
 }
 
 #search-button {
-    background-color: azure;
+    background-color: var(--light3);
+    color: var(light2);
 }
 
 #current-day-card {
-    background-color: rgba(137, 43, 226, 0.237);
+    background-color: var(--dark1);
     border-radius: 10px;
-    color: whitesmoke;
+    color: var(--white);
 }
 
 #forecast-card {
-    background-color: aliceblue;
-    border-color: navy;
+    background-color: var(--light2);
+    border-color: var(--light1);
     margin: 3px;
 }
 
