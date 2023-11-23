@@ -7,7 +7,6 @@
 // TODO Work out how to display the 5 place options as a drop-down list so the user can verify the location - testing at the moment using first option.
 var limit = 5;
 
-
 // TODO convert wind speed as it is in meters per second currently
 // TODO check all units
 
@@ -17,15 +16,17 @@ var stateCode = "";
 var countryCode = "";
 var searchInput = "";
 var queryURLcity = "";
+var newButton;
 
 // * Code for the main search button - searching for a city when a user enters the city name in the search box.
 // The user can enter the name of a city in the search box.
 // When the user clicks on the search button
 var searchButton = document.getElementById("search-button");
-searchButton.addEventListener("click", function(event) {
-    event.preventDefault();
 
-    // TODO Add here to clear data from previous city before adding new if needed - test to check
+searchButton.addEventListener("click", runSearch);
+
+function runSearch (event) {
+    event.preventDefault();
 
     // then the city name entered is captured and assigned to the variable searchInput
     searchInput = document.getElementById("search-input").value;
@@ -38,12 +39,12 @@ searchButton.addEventListener("click", function(event) {
             // * Reference the URL:
             fetch (queryURLcity)
                 // * Get the boxed response:
-                .then (function (response) {
+                .then (function getResponse (response) {
                     // * Give the boxed response as an output.
                     return response.json();
                 })
                 // * Open the boxed response to get the data.
-                .then (function (data) {
+                .then (function getURL (data) {
                     var lat = data[0].lat;
                     var lon = data[0].lon;
                     // * URL structure with latitude and longitude coordinate variables:
@@ -52,16 +53,15 @@ searchButton.addEventListener("click", function(event) {
                     // Reference the URL:
                     fetch (queryURLcoordinates)
                     // Get the boxed response:
-                    .then (function (response) {
+                    .then (function getResponse (response) {
                         // Give the boxed response as an output.
                         return response.json();
                     // Open the boxed response to get the data.
-                    }).then (function (data) {
+                    }).then (function getData (data) {
 
                         // Variables to use across multiple cards:
                         var heading;
                         var date;
-                        var listItem;
                         var iconCode;
                         var iconURL;
                         var icon;
@@ -74,8 +74,7 @@ searchButton.addEventListener("click", function(event) {
                         var humidityText;
         
 
-
-        // For current day card, reference and assign the key information
+        // For the current day card, reference and assign the key information
 
             var cityName = data.city.name;
             cityNameHeading = document.getElementById("city-name");
@@ -92,22 +91,16 @@ searchButton.addEventListener("click", function(event) {
 
             currentTempK = data.list[0].main.temp;
             currentTempC = Math.round(currentTempK-273.15);
-            currentListItem = document.createElement("li");
-            currentTempText = document.createTextNode("Temp: " + currentTempC + " ºc");
-            currentListItem.append(currentTempText);
-            document.querySelector("#current-card-list").appendChild(currentListItem);
+            currentTempText = document.getElementById("current-temperature");
+            currentTempText.textContent = "Temp: " + currentTempC + " ºc";
 
             currentWind = Math.round(data.list[0].wind.speed);
-            currentListItem = document.createElement("li");
-            currentWindText = document.createTextNode("Wind: " + currentWind + " kph");
-            currentListItem.append(currentWindText);
-            document.querySelector("#current-card-list").appendChild(currentListItem);
+            currentWindText = document.getElementById("current-wind");
+            currentWindText.textContent = "Wind: " + currentWind + " kph";
 
             currentHumidity = data.list[0].main.humidity;
-            currentListItem = document.createElement("li");
-            currentHumidityText = document.createTextNode("Humidity: " + currentHumidity + " %");
-            currentListItem.append(currentHumidityText);
-            document.querySelector("#current-card-list").appendChild(currentListItem);
+            currentHumidityText = document.getElementById("current-humidity");
+            currentHumidityText.textContent = "Humidity: " + currentHumidity + " %";
 
             // Store cityName in local storage.
             window.localStorage.setItem("cityName", cityName);
@@ -117,15 +110,15 @@ searchButton.addEventListener("click", function(event) {
 
             // Get cityName from local storage and
             var cityButton = localStorage.getItem("cityName");
-            console.log(cityButton);
                         
             // add cityName to history button underneath the main search box.
             var historyButton = document.querySelector("#city-history");
-            console.log(historyButton);
             const newButton = document.createElement('button');
             newButton.setAttribute("id", "history-button");
             newButton.textContent = cityButton;
             historyButton.appendChild(newButton);
+
+            
 
                         // Array of weather data for forecast days:
                         var forecastArray = [];
@@ -134,7 +127,6 @@ searchButton.addEventListener("click", function(event) {
                         // For each forecast card, reference and assign the key information.
                         var forecastCards = document.querySelectorAll("#forecast-card");
                         for (var i = 0; i <= forecastCards.length; i++) {
-                            //date = forecastArray[i+1].dt_txt;
                             date = dayjs().add((i+1), 'day').format("DD/MM/YYYY");
                             iconCode = forecastArray[i].weather[0].icon;
                             iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
@@ -150,24 +142,18 @@ searchButton.addEventListener("click", function(event) {
 
                             icon = document.querySelectorAll("#card-icon");
                             icon[i].setAttribute("src", iconURL);
-                            
-                            listItem = document.createElement("li");
-                            tempText = document.createTextNode("Temp: " + tempC + " ºc");
-                            listItem.append(tempText);
-                            document.querySelectorAll("#card-list")[i].appendChild(listItem);
 
-                            listItem = document.createElement("li");
-                            windText = document.createTextNode("Wind: " + wind + " kph");
-                            listItem.append(windText);
-                            document.querySelectorAll("#card-list")[i].appendChild(listItem);
-                            
-                            listItem = document.createElement("li");
-                            humidityText = document.createTextNode("Humidity: " + humidity + " %");
-                            listItem.append(humidityText);
-                            document.querySelectorAll("#card-list")[i].appendChild(listItem);
+                            tempText = document.querySelectorAll("#temperature");
+                            tempText[i].textContent = "Temp: " + tempC + " ºc";
+
+                            windText = document.querySelectorAll("#wind");
+                            windText[i].textContent = "Wind: " + wind + " kph";
+
+                            humidityText = document.querySelectorAll("#humidity");
+                            humidityText[i].textContent = "Humidity: " + humidity + " %";
 
                         }
 
                     });
                 });
-});
+};
