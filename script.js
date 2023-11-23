@@ -78,22 +78,46 @@ searchButton.addEventListener("click", function(event) {
         // For current day card, reference and assign the key information
 
             var cityName = data.city.name;
-            console.log(data.city.name);
             cityNameHeading = document.getElementById("city-name");
-            cityNameHeading.textContent = cityName
+            cityNameHeading.textContent = cityName;
             
             var currentDate = dayjs().format("DD/MM/YYYY");
             currentDateHeading = document.getElementById("current-date");
-            currentDateHeading.textContent = currentDate
+            currentDateHeading.textContent = currentDate;
 
+            var currentIconCode = data.list[0].weather[0].icon;
+            currentIconURL = "http://openweathermap.org/img/w/" + currentIconCode + ".png";
+            currentIcon = document.querySelector("#current-card-icon");
+            currentIcon.setAttribute("src", currentIconURL);
 
+            currentTempK = data.list[0].main.temp;
+            currentTempC = Math.round(currentTempK-273.15);
+            currentListItem = document.createElement("li");
+            currentTempText = document.createTextNode("Temp: " + currentTempC + " ºc");
+            currentListItem.append(currentTempText);
+            document.querySelector("#current-card-list").appendChild(currentListItem);
+
+            currentWind = Math.round(data.list[0].wind.speed);
+            currentListItem = document.createElement("li");
+            currentWindText = document.createTextNode("Wind: " + currentWind + " kph");
+            currentListItem.append(currentWindText);
+            document.querySelector("#current-card-list").appendChild(currentListItem);
+
+            //Humidity
+
+            currentHumidity = data.list[0].main.humidity;
+            currentListItem = document.createElement("li");
+            currentHumidityText = document.createTextNode("Humidity: " + currentHumidity + " %");
+            currentListItem.append(currentHumidityText);
+            document.querySelector("#current-card-list").appendChild(currentListItem);
 
                         // Array of weather data for forecast days:
                         var forecastArray = [];
-                        forecastArray.push(data.list[0], data.list[7], data.list[15], data.list[23], data.list[31], data.list[39]);
-            
-                        // For each item in the forecastArray, reference and assign the key information
-                        for (var i = 0; i <= forecastArray.length; i++) {
+                        forecastArray.push(data.list[7], data.list[15], data.list[23], data.list[31], data.list[39]);
+
+                        // For each forecast card, reference and assign the key information.
+                        var forecastCards = document.querySelectorAll("#forecast-card");
+                        for (var i = 0; i <= forecastCards.length; i++) {
                             //date = forecastArray[i+1].dt_txt;
                             date = dayjs().add((i+1), 'day').format("DD/MM/YYYY");
                             iconCode = forecastArray[i].weather[0].icon;
@@ -124,7 +148,7 @@ searchButton.addEventListener("click", function(event) {
                             listItem = document.createElement("li");
                             humidityText = document.createTextNode("Humidity: " + humidity + " %");
                             listItem.append(humidityText);
-                            document.querySelectorAll("#card-list") [i].appendChild(listItem);
+                            document.querySelectorAll("#card-list")[i].appendChild(listItem);
 
                         }
 
