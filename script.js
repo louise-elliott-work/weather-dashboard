@@ -112,18 +112,20 @@ searchButton.addEventListener("click", function(event) {
             // Store cityName in local storage.
             window.localStorage.setItem("cityName", cityName);
 
-            // Get cityName from local storage.
+            // and clear the search box so the city name does not persist:
+            document.getElementById("search-input").value = "";
+
+            // Get cityName from local storage and
             var cityButton = localStorage.getItem("cityName");
             console.log(cityButton);
                         
-            // Add cityName to history button underneath the main search box.
+            // add cityName to history button underneath the main search box.
             var historyButton = document.querySelector("#city-history");
             console.log(historyButton);
             const newButton = document.createElement('button');
             newButton.setAttribute("id", "history-button");
             newButton.textContent = cityButton;
             historyButton.appendChild(newButton);
-
 
                         // Array of weather data for forecast days:
                         var forecastArray = [];
