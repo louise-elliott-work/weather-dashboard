@@ -103,13 +103,26 @@ searchButton.addEventListener("click", function(event) {
             currentListItem.append(currentWindText);
             document.querySelector("#current-card-list").appendChild(currentListItem);
 
-            //Humidity
-
             currentHumidity = data.list[0].main.humidity;
             currentListItem = document.createElement("li");
             currentHumidityText = document.createTextNode("Humidity: " + currentHumidity + " %");
             currentListItem.append(currentHumidityText);
             document.querySelector("#current-card-list").appendChild(currentListItem);
+
+            // Store cityName in local storage.
+            window.localStorage.setItem("cityName", cityName);
+
+            // Get cityName from local storage.
+            var cityButton = localStorage.getItem("cityName");
+            console.log(cityButton);
+                        
+            // Add cityName to history button underneath the main search box.
+            var historyButton = document.querySelector("#city-history");
+            console.log(historyButton);
+            const newButton = document.createElement('button');
+            newButton.textContent = cityButton;
+            historyButton.appendChild(newButton);
+
 
                         // Array of weather data for forecast days:
                         var forecastArray = [];
@@ -127,7 +140,7 @@ searchButton.addEventListener("click", function(event) {
                             wind = Math.round(forecastArray[i].wind.speed);
                             humidity = forecastArray[i].main.humidity;
 
-                            // For each forecast card, assign the corresponding key information
+                            // For each of the five forecast cards, assign the corresponding key information.
 
                             heading = document.querySelectorAll("#card-heading");
                             heading[i].textContent = date;
