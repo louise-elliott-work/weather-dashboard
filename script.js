@@ -120,6 +120,7 @@ searchButton.addEventListener("click", function(event) {
             var historyButton = document.querySelector("#city-history");
             console.log(historyButton);
             const newButton = document.createElement('button');
+            newButton.setAttribute("id", "history-button");
             newButton.textContent = cityButton;
             historyButton.appendChild(newButton);
 
