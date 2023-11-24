@@ -4,37 +4,38 @@
 // * API for 5-day weather forecast using latitude and longitude variables to identify city locations:
 // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=573d86dc171ce289692f18783224bf7c
 
+// TODO convert wind speed as it is in meters per second currently
+// TODO check all units
 // TODO Work out how to display the 5 place options as a drop-down list so the user can verify the location - testing at the moment using first option.
 var limit = 5;
 
-// TODO convert wind speed as it is in meters per second currently
-// TODO check all units
 
-// * For tests using city name of Bath (UK):
-// ! Check which of these need to be global
-var stateCode = "";
-var countryCode = "";
-var searchInput = "";
-var queryURLcity = "";
-var newButton;
 
 // * Code for the main search button - searching for a city when a user enters the city name in the search box.
 // The user can enter the name of a city in the search box.
-// When the user clicks on the search button
+// When the user clicks on the search button, the search is initiated.
 var searchButton = document.getElementById("search-button");
-
 searchButton.addEventListener("click", runSearch);
+
+// When the user clicks on a search history button, the search is re-initiated.
+
+
+
 
 function runSearch (event) {
     event.preventDefault();
 
-    // then the city name entered is captured and assigned to the variable searchInput
+    console.log("function triggered");
+
+    // The city name entered is captured and assigned to the variable searchInput.
     searchInput = document.getElementById("search-input").value;
 
-    // the data for the city name input by the user is accessed:
-    queryURLcity = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchInput + "," + stateCode + "," + countryCode + "&limit=" + limit + "&appid=573d86dc171ce289692f18783224bf7c";
+    // The data for the city name input by the user is accessed to produce the URL to use:
+    var stateCode = "";
+    var countryCode = "";
+    var queryURLcity = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchInput + "," + stateCode + "," + countryCode + "&limit=" + limit + "&appid=573d86dc171ce289692f18783224bf7c";
 
-    // and then the latitude and longitude for the city are found and assigned to the variables lat and lon to give the JSON output for that city's 5-day weather forecast
+    // Then the latitude and longitude for the city are found and assigned to the variables lat and lon to give the JSON output for that city's 5-day weather forecast
         // * Fetch code:
             // * Reference the URL:
             fetch (queryURLcity)
@@ -72,53 +73,53 @@ function runSearch (event) {
                         var windText;
                         var humidity;
                         var humidityText;
-        
 
-        // For the current day card, reference and assign the key information
+                        // For the current day card, reference and assign the key information.
 
-            var cityName = data.city.name;
-            cityNameHeading = document.getElementById("city-name");
-            cityNameHeading.textContent = cityName;
-            
-            var currentDate = dayjs().format("DD/MM/YYYY");
-            currentDateHeading = document.getElementById("current-date");
-            currentDateHeading.textContent = currentDate;
-
-            var currentIconCode = data.list[0].weather[0].icon;
-            currentIconURL = "http://openweathermap.org/img/w/" + currentIconCode + ".png";
-            currentIcon = document.querySelector("#current-card-icon");
-            currentIcon.setAttribute("src", currentIconURL);
-
-            currentTempK = data.list[0].main.temp;
-            currentTempC = Math.round(currentTempK-273.15);
-            currentTempText = document.getElementById("current-temperature");
-            currentTempText.textContent = "Temp: " + currentTempC + " ºc";
-
-            currentWind = Math.round(data.list[0].wind.speed);
-            currentWindText = document.getElementById("current-wind");
-            currentWindText.textContent = "Wind: " + currentWind + " kph";
-
-            currentHumidity = data.list[0].main.humidity;
-            currentHumidityText = document.getElementById("current-humidity");
-            currentHumidityText.textContent = "Humidity: " + currentHumidity + " %";
-
-            // Store cityName in local storage.
-            window.localStorage.setItem("cityName", cityName);
-
-            // and clear the search box so the city name does not persist:
-            document.getElementById("search-input").value = "";
-
-            // Get cityName from local storage and
-            var cityButton = localStorage.getItem("cityName");
+                        var cityName = data.city.name;
+                        cityNameHeading = document.getElementById("city-name");
+                        cityNameHeading.textContent = cityName;
                         
-            // add cityName to history button underneath the main search box.
-            var historyButton = document.querySelector("#city-history");
-            const newButton = document.createElement('button');
-            newButton.setAttribute("id", "history-button");
-            newButton.textContent = cityButton;
-            historyButton.appendChild(newButton);
+                        var currentDate = dayjs().format("DD/MM/YYYY");
+                        currentDateHeading = document.getElementById("current-date");
+                        currentDateHeading.textContent = currentDate;
 
-            
+                        var currentIconCode = data.list[0].weather[0].icon;
+                        currentIconURL = "http://openweathermap.org/img/w/" + currentIconCode + ".png";
+                        currentIcon = document.querySelector("#current-card-icon");
+                        currentIcon.setAttribute("src", currentIconURL);
+
+                        currentTempK = data.list[0].main.temp;
+                        currentTempC = Math.round(currentTempK-273.15);
+                        currentTempText = document.getElementById("current-temperature");
+                        currentTempText.textContent = "Temp: " + currentTempC + " ºc";
+
+                        currentWind = Math.round(data.list[0].wind.speed);
+                        currentWindText = document.getElementById("current-wind");
+                        currentWindText.textContent = "Wind: " + currentWind + " kph";
+
+                        currentHumidity = data.list[0].main.humidity;
+                        currentHumidityText = document.getElementById("current-humidity");
+                        currentHumidityText.textContent = "Humidity: " + currentHumidity + " %";
+
+                        // Store cityName and queryURLcoordinates in local storage.
+                        window.localStorage.setItem("cityName", searchInput);
+                        window.localStorage.setItem("queryURLcoordinates", queryURLcoordinates);
+
+                        // and clear the search box so the city name does not persist:
+                        document.getElementById("search-input").value = "";
+
+                        // Get cityName from local storage and
+                        var cityButton = localStorage.getItem("cityName");
+                                
+                        // add cityName to history button underneath the main search box.
+                        var historyButton = document.querySelector("#city-history");
+                        var newButton = document.createElement("button");
+                        newButton.setAttribute("class", "search-input");
+                        newButton.setAttribute("id", "history-button");
+                        newButton.textContent = cityButton;
+                        historyButton.appendChild(newButton);
+                        historyButton.addEventListener("click", runSearch);
 
                         // Array of weather data for forecast days:
                         var forecastArray = [];
@@ -155,5 +156,7 @@ function runSearch (event) {
                         }
 
                     });
+
                 });
+
 };
