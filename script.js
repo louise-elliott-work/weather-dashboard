@@ -5,30 +5,53 @@
 // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=573d86dc171ce289692f18783224bf7c
 
 // TODO convert wind speed as it is in meters per second currently
-// TODO check all units
+// TODO check all units, especially humidity - looks too high consistently
 // TODO Work out how to display the 5 place options as a drop-down list so the user can verify the location - testing at the moment using first option.
 var limit = 5;
 
-
+var searchInput;
 
 // * Code for the main search button - searching for a city when a user enters the city name in the search box.
 // The user can enter the name of a city in the search box.
 // When the user clicks on the search button, the search is initiated.
 var searchButton = document.getElementById("search-button");
-searchButton.addEventListener("click", runSearch);
+searchButton.addEventListener("click", processSearchRequest);
 
-// When the user clicks on a search history button, the search is re-initiated.
-
-
-
-
-function runSearch (event) {
-    event.preventDefault();
-
-    console.log("function triggered");
+function processSearchRequest () {
 
     // The city name entered is captured and assigned to the variable searchInput.
     searchInput = document.getElementById("search-input").value;
+
+    // Add cityName to history button underneath the main search box.
+    var historyButton = document.querySelector("#city-history");
+    var newButton = document.createElement("button");
+    newButton.setAttribute("class", "search-input");
+    newButton.setAttribute("id", "history-button");
+    newButton.textContent = document.getElementById("search-input").value;
+    historyButton.appendChild(newButton);
+    historyButton.addEventListener("click", processHistorySearchRequest);
+
+    // Then run the search for the data to be displayed.
+    runSearch ();
+}
+
+// When the user clicks on a search history button, the search is re-initiated.
+
+function processHistorySearchRequest (clickedButton) {
+    // Assign the button value as the search request value.
+    searchInput = clickedButton.target.innerHTML;
+    console.log(searchInput);
+    // Then run the search for the data to be displayed.
+    runSearch ();
+};
+
+
+
+function runSearch () {
+
+    console.log("function triggered");
+
+
 
     // The data for the city name input by the user is accessed to produce the URL to use:
     var stateCode = "";
@@ -112,14 +135,7 @@ function runSearch (event) {
                         // Get cityName from local storage and
                         var cityButton = localStorage.getItem("cityName");
                                 
-                        // add cityName to history button underneath the main search box.
-                        var historyButton = document.querySelector("#city-history");
-                        var newButton = document.createElement("button");
-                        newButton.setAttribute("class", "search-input");
-                        newButton.setAttribute("id", "history-button");
-                        newButton.textContent = cityButton;
-                        historyButton.appendChild(newButton);
-                        historyButton.addEventListener("click", runSearch);
+
 
                         // Array of weather data for forecast days:
                         var forecastArray = [];
