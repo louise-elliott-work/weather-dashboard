@@ -8,12 +8,16 @@ searchButton.addEventListener("click", processSearchRequest);
 function processSearchRequest () {
     // * The city name entered is captured and assigned to the variable searchInput.
     searchInput = document.getElementById("search-input").value;
-    // * The cityName is added as a history button underneath the main search box.
+    // * The cityName is added as a history button underneath the main search box and localStorage is used so buttons persist when the page is refreshed.
     var historyButton = document.querySelector("#city-history");
     var newButton = document.createElement("button");
     newButton.setAttribute("class", "search-input");
     newButton.setAttribute("id", "history-button");
-    newButton.textContent = document.getElementById("search-input").value;
+    
+    var storedCity = document.getElementById("search-input").value;
+    localStorage.setItem("citySearch", storedCity);
+    newButton.textContent = localStorage.getItem("citySearch");
+
     historyButton.appendChild(newButton);
     historyButton.addEventListener("click", processHistorySearchRequest);
     // * Then the search is done for the data to be displayed.
