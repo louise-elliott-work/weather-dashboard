@@ -130,7 +130,7 @@ function runSearch () {
                         forecastArray.push(data.list[7], data.list[15], data.list[23], data.list[31], data.list[39]);
                         // * For each forecast card, the key information is referenced and assigned.
                         var forecastCards = document.querySelectorAll("#forecast-card");
-                        for (var i = 0; i <= forecastCards.length; i++) {
+                        for (var i = 0; i < forecastCards.length; i++) {
                             // * Date:
                             forecastDate = dayjs().add((i+1), 'day').format("DD/MM/YYYY");
                             forecastDateHeading = document.querySelectorAll("#card-heading");
