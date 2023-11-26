@@ -27,7 +27,7 @@ Each time a city name is searched, a button appears under the main search box, w
 All search history buttons will persist when the page is reloaded.
 
 Screenshot: ![Screenshot of weather dashboard](assets/screenshot.png)
-Website: https://louise-elliott-work.github.io-weather-dashboard
+Website: https://louise-elliott-work.github.io/weather-dashboard
 
 ## License
 
