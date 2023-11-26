@@ -82,7 +82,7 @@ function runSearch () {
     var stateCode = "";
     var countryCode = "";
     var limit = "";
-    var queryURLcity = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchInput + "," + stateCode + "," + countryCode + "&limit=" + limit + "&appid=573d86dc171ce289692f18783224bf7c";
+    var queryURLcity = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchInput + "," + stateCode + "," + countryCode + "&limit=" + limit + "&appid=573d86dc171ce289692f18783224bf7c";
     // * Then the latitude and longitude for the city are found and assigned to the variables lat and lon to give the JSON output for that city's current weather and a 5-day weather forecast.
             fetch (queryURLcity)
                 .then (function getResponse (response) {
@@ -107,7 +107,7 @@ function runSearch () {
                             currentDateHeading.textContent = currentDate;
                             // * Icon:
                             var currentIconCode = data.list[0].weather[0].icon;
-                            currentIconURL = "http://openweathermap.org/img/w/" + currentIconCode + ".png";
+                            currentIconURL = "https://openweathermap.org/img/w/" + currentIconCode + ".png";
                             currentIcon = document.querySelector("#current-card-icon");
                             currentIcon.setAttribute("src", currentIconURL);
                             // * Temperature:
@@ -137,7 +137,7 @@ function runSearch () {
                             forecastDateHeading[i].textContent = forecastDate;
                             // * Icon:
                             forecastIconCode = forecastArray[i].weather[0].icon;
-                            forecastIconURL = "http://openweathermap.org/img/w/" + forecastIconCode + ".png";
+                            forecastIconURL = "https://openweathermap.org/img/w/" + forecastIconCode + ".png";
                             forecastIcon = document.querySelectorAll("#card-icon");
                             forecastIcon[i].setAttribute("src", forecastIconURL);
                             // * Temperature:
